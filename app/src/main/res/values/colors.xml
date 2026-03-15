@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shadcn Light Theme Colors (Zinc/Slate inspired) -->
+    <color name="shadcn_background">#ffffff</color>
+    <color name="shadcn_foreground">#09090b</color>
+    <color name="shadcn_primary">#18181b</color>
+    <color name="shadcn_primary_foreground">#fafafa</color>
+    <color name="shadcn_muted">#f4f4f5</color>
+    <color name="shadcn_muted_foreground">#71717a</color>
+    <color name="shadcn_border">#e4e4e7</color>
+    <color name="shadcn_card">#ffffff</color>
+    <color name="shadcn_card_foreground">#09090b</color>
+    <color name="shadcn_accent">#f4f4f5</color>
+    <color name="shadcn_accent_foreground">#09090b</color>
+    <color name="shadcn_destructive">#ef4444</color>
+    <color name="shadcn_destructive_foreground">#fafafa</color>
+
+    <color name="transparent">#00000000</color>
+</resources>

@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/shadcn_background"
     tools:context=".AppView" >
 
     <FrameLayout
@@ -23,9 +24,11 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         android:gravity="center"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:textColor="@color/shadcn_foreground"
+        android:textStyle="bold"
         android:preferKeepClear="true"
-        android:textSize="28sp"/>
+        android:textSize="24sp"/>
 
 </RelativeLayout>

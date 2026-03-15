@@ -15,11 +15,15 @@
         -->
     </style>
 
-    <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/shadcn_background</item>
+        <item name="android:textColor">@color/shadcn_foreground</item>
+        <item name="android:textColorPrimary">@color/shadcn_foreground</item>
+        <item name="android:colorBackground">@color/shadcn_background</item>
+        <item name="android:colorPrimary">@color/shadcn_primary</item>
     </style>
 
     <style name="StreamBaseTheme" parent="AppBaseTheme">

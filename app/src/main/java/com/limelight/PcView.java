@@ -60,7 +60,6 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 public class PcView extends Activity implements AdapterFragmentCallbacks {
-    private RelativeLayout noPcFoundLayout;
     private PcGridAdapter pcGridAdapter;
     private ShortcutHelper shortcutHelper;
     private ComputerManagerService.ComputerManagerBinder managerBinder;
@@ -121,7 +120,15 @@ public class PcView extends Activity implements AdapterFragmentCallbacks {
     private final static int GAMESTREAM_EOL_ID = 11;
 
     private void initializeViews() {
-        setContentView(R.layout.activity_pc_view);
+        android.view.View composeView = com.limelight.ui.compose.ComposeBridge.createPcViewCompose(
+            this,
+            pcGridAdapter,
+            () -> startActivity(new Intent(PcView.this, StreamSettings.class)),
+            () -> HelpLauncher.launchSetupGuide(PcView.this),
+            () -> startActivity(new Intent(PcView.this, AddComputerManually.class))
+        );
+        
+        setContentView(composeView);
 
         UiHelper.notifyNewRootView(this);
 
@@ -136,49 +143,6 @@ public class PcView extends Activity implements AdapterFragmentCallbacks {
         // Set the correct layout for the PC grid
         pcGridAdapter.updateLayoutWithPreferences(this, PreferenceConfiguration.readPreferences(this));
 
-        // Setup the list view
-        ImageButton settingsButton = findViewById(R.id.settingsButton);
-        ImageButton addComputerButton = findViewById(R.id.manuallyAddPc);
-        ImageButton helpButton = findViewById(R.id.helpButton);
-
-        settingsButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(PcView.this, StreamSettings.class));
-            }
-        });
-        addComputerButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(PcView.this, AddComputerManually.class);
-                startActivity(i);
-            }
-        });
-        helpButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HelpLauncher.launchSetupGuide(PcView.this);
-            }
-        });
-
-        // Amazon review didn't like the help button because the wiki was not entirely
-        // navigable via the Fire TV remote (though the relevant parts were). Let's hide
-        // it on Fire TV.
-        if (getPackageManager().hasSystemFeature("amazon.hardware.fire_tv")) {
-            helpButton.setVisibility(View.GONE);
-        }
-
-        getFragmentManager().beginTransaction()
-            .replace(R.id.pcFragmentContainer, new AdapterFragment())
-            .commitAllowingStateLoss();
-
-        noPcFoundLayout = findViewById(R.id.no_pc_found_layout);
-        if (pcGridAdapter.getCount() == 0) {
-            noPcFoundLayout.setVisibility(View.VISIBLE);
-        }
-        else {
-            noPcFoundLayout.setVisibility(View.INVISIBLE);
-        }
         pcGridAdapter.notifyDataSetChanged();
     }
 
@@ -703,8 +667,7 @@ public class PcView extends Activity implements AdapterFragmentCallbacks {
                 pcGridAdapter.notifyDataSetChanged();
 
                 if (pcGridAdapter.getCount() == 0) {
-                    // Show the "Discovery in progress" view
-                    noPcFoundLayout.setVisibility(View.VISIBLE);
+                    // Compose layer will reactively show empty state naturally
                 }
 
                 break;
@@ -732,9 +695,7 @@ public class PcView extends Activity implements AdapterFragmentCallbacks {
         else {
             // Add a new entry
             pcGridAdapter.addComputer(new ComputerObject(details));
-
-            // Remove the "Discovery in progress" view
-            noPcFoundLayout.setVisibility(View.INVISIBLE);
+            // Compose automatically handles empty state natively
         }
 
         // Notify the view that the data has changed
